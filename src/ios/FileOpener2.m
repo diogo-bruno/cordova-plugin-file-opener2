@@ -30,10 +30,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @synthesize controller = docController;
 
 CDVPluginResult* pluginResult = nil;
-NSString* callbackId = nil;
+NSString* callbackIdFileOpener = nil;
 
 - (void) open: (CDVInvokedUrlCommand*)command {
-	callbackId = command.callbackId;
+	callbackIdFileOpener = command.callbackId;
 	NSString *path = [command.arguments objectAtIndex:0];
 	NSString *contentType = [command.arguments objectAtIndex:1];
 	BOOL showPreview = YES;
@@ -118,7 +118,7 @@ NSString* callbackId = nil;
 				nil
 			];
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:jsonObj];
-        	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+        	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdFileOpener];
 		}
 	});
 }
@@ -127,11 +127,11 @@ NSString* callbackId = nil;
 
 @implementation FileOpener2 (UIDocumentInteractionControllerDelegate)
 - (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller {
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdFileOpener];
 }
 
 - (void)documentInteractionControllerDidEndPreview:(UIDocumentInteractionController *)controller {
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackIdFileOpener];
 }
 
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
